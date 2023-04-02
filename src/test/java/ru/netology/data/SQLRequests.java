@@ -5,38 +5,67 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class SQLRequests {
-    @SneakyThrows
-    public static String getStatusByCard() {
-        var dbUrl = System.getProperty("db.url");
-        var dbUser = System.getProperty("db.user");
-        var dbPassword = System.getProperty("db.password");
-        var byCardStatus = "SELECT status FROM payment_entity ORDER BY created DESC LIMIT 1";
+        private static final String user = "user";
+        private static final String password = "pass";
 
-        var runner = new QueryRunner();
-        try (
-                var conn = DriverManager.getConnection(dbUrl,dbUser, dbPassword)
-        ) {
-            var status1 = runner.query(conn, byCardStatus, new ScalarHandler<String>());
-            return status1;
+        private static final QueryRunner runner = new QueryRunner();
+        private static final Connection conn = getConnection();
+
+        public static Connection getConnection() {
+            try {
+                return DriverManager.getConnection(System.getProperty("db.url"), user, password);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
-    }
 
-    @SneakyThrows
-    public static String getStatusOnCredit() {
-        var dbUrl = System.getProperty("db.url");
-        var dbUser = System.getProperty("db.user");
-        var dbPassword = System.getProperty("db.password");
-        var creditStatus = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1";
+        public static void clearTables() {
+            var runner = new QueryRunner();
 
-        var runner = new QueryRunner();
-        try (
-                var conn = DriverManager.getConnection(dbUrl,dbUser, dbPassword)
-        ) {
-            var status2 = runner.query(conn, creditStatus, new ScalarHandler<String>());
-            return status2;
+            var clearCreditRequestTableQuery = "DELETE FROM credit_request_entity;";
+            var clearOrderTableQuery = "DELETE FROM order_entity;";
+            var clearPaymentTableQuery = "DELETE FROM payment_entity;";
+
+            try (
+                    var conn = DriverManager.getConnection(
+                            System.getProperty("db.url"),
+                            System.getProperty("db.user"),
+                            System.getProperty("db.pass")
+                    )
+            ) {
+                runner.update(conn, clearCreditRequestTableQuery);
+                runner.update(conn, clearOrderTableQuery);
+                runner.update(conn, clearPaymentTableQuery);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-    }
+
+        @SneakyThrows
+        public static String getStatusByCard() {
+            var status = "SELECT status FROM payment_entity ORDER BY created DESC";
+            try {
+                return runner.query(conn, status, new ScalarHandler<>());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @SneakyThrows
+        public String getStatusByCredit() {
+            var status = "SELECT status FROM credit_request_entity ORDER BY created DESC";
+            try {
+                return runner.query(conn, status, new ScalarHandler<>());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
 }

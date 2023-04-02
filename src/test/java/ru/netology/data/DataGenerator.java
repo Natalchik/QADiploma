@@ -1,144 +1,55 @@
 package ru.netology.data;
 
 import com.github.javafaker.Faker;
-import lombok.Value;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class DataGenerator {
-   private DataGenerator() {
+
+   public static String approvedCardNumber = "4444444444444441";
+   public static String declinedCardNumber = "4444444444444442";
+   public static String emptyCard = "";
+   public static String zeroCard = "0000000000000000";
+   public static String shortCardNumber = "1234";
+   public static String invalidMonth = "1%";
+   public static String falseMonth = "13";
+   public static String emptyMonth = "";
+   public static String zeroMonth = "00";
+   public static String invalidYear = "2#";
+   public static String pastYear = "20";
+   public static String emptyYear = "";
+   public static String zeroYear = "00";
+   public static String invalidCvc = "аа";
+   public static String emptyCvc = "";
+   public static String invalidHolder = "Иван Иванов";
+   public static String emptyHolder = "";
+   public static String zeroHolder = "0000000";
+
+   public static String getRandomCard() {
+      Faker faker = new Faker();
+      return faker.finance().creditCard();
    }
 
-   private static Faker faker = new Faker(new Locale("en"));
+   public static String getMonth() {
+      return LocalDate.now().format(DateTimeFormatter.ofPattern("MM"));
+         }
 
-   @Value
-   public static class CardInfo {
-      public String cardNumber;
+   public static String getYear(int shiftYears) {
+      return LocalDate.now().plusYears(shiftYears).format(DateTimeFormatter.ofPattern("yy"));
    }
 
-   public static CardInfo approvedCard() {
-      return new CardInfo("4444444444444441");
-   }
-
-   public static CardInfo declinedCard() {
-      return new CardInfo("4444444444444442");
-   }
-
-   public static CardInfo emptyCard() {
-      return new CardInfo("");
-   }
-
-   public static String randomCard() {
-      String randomCard = faker.finance().creditCard();
-      return randomCard;
-   }
-
-   public static CardInfo zeroCard() {
-      return new CardInfo("0000000000000000");
-   }
-
-   public static CardInfo someSymbolsCard() {
-      return new CardInfo("1234");
-   }
-
-   @Value
-   public static class HolderInfo {
-      public String holder;
-   }
 
    public static String getRandomValidHolder() {
+      Faker faker = new Faker(new Locale("en"));
       String name = faker.name().firstName();
       String surname = faker.name().lastName();
-      String randomName = name + " " + surname;
-      return randomName;
+      return name + " " + surname;
    }
 
-   public static String getInvalidHolder() {
-      String holder = "Иван Иванов";
-      return holder;
+   public static String getRandomValidCvc() {
+      Faker faker = new Faker();
+      return faker.number().digits(3);
    }
-
-   public static String getEmptyHolder() {
-      String holder = "";
-      return holder;
-   }
-
-   public static String getZeroHolder() {
-      String holder = "0000000";
-      return holder;
-   }
-
-   @Value
-   public static class MonthInfo {
-      public String month;
-   }
-
-   public static int getRandomValidMonth() {
-      int month = faker.number().numberBetween(10, 12);
-      return month;
-   }
-
-   public static MonthInfo getInvalidMonth() {
-      return new MonthInfo("1%");
-   }
-
-   public static MonthInfo getFalseMonth() {
-      return new MonthInfo("13");
-   }
-
-   public static MonthInfo getEmptyMonth() {
-      return new MonthInfo("");
-   }
-
-   public static MonthInfo getZeroMonth() {
-      return new MonthInfo("00");
-   }
-
-   @Value
-   public static class YearInfo {
-      public String year;
-   }
-
-   public static int getRandomValidYear() {
-      int month = faker.number().numberBetween(23, 26);
-      return month;
-   }
-
-   public static YearInfo getInvalidYear() {
-      return new YearInfo("2#");
-   }
-
-   public static YearInfo getPastYear() {
-      return new YearInfo("20");
-   }
-
-   public static YearInfo getEmptyYear() {
-      return new YearInfo("");
-   }
-
-   public static YearInfo getZeroYear() {
-      return new YearInfo("00");
-   }
-
-   @Value
-   public static class CvcInfo {
-      public String cvc;
-   }
-
-   public static int getRandomValidCvc() {
-      int cvc = faker.number().numberBetween(111, 999);
-      return cvc;
-   }
-
-   public static CvcInfo getInvalidCvc() {
-      return new CvcInfo("аа");
-   }
-
-   public static CvcInfo getEmptyCvc() {
-      return new CvcInfo("");
-   }
-
-   public static CvcInfo getZeroCvc() {
-      return new CvcInfo("000");
-   }
-}
+  }

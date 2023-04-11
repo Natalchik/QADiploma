@@ -20,8 +20,14 @@
 1. Запустить Docker Desktop
 2. Выполнить git clone https://github.com/Natalchik/QADiploma.git
 3. Открыть проект в редакторе кода (например, IntelliJ IDEA) 
-4. Для того, что бы протестировать сервис на БД PostgreSQL или MySQL необходимо раскомментировать/закомментировать настройки для соответствующих БД в файлах application.properties, docker-compose.yml и в build.gradle в блоке test
-5. Открыть терминал и выполнить команду запуска контейнеров docker-compose up
-6. В другой вкладке терминала запустить проект командой java -jar artifacts/aqa-shop.jar
-7. Запустить тесты командой gradlew test в новой вкладке терминала
-8. После прохождения всех тестов в новой вкладке терминала выполнить команду gradlew allureServe для просмотра отчета по результатам выполнения тестов
+4. Для запуска приложения с БД MySQL выполняем следующую команду:
+   `java -jar artifacts/aqa-shop.jar "-
+   Dspring.datasource.url=jdbc:mysql://localhost:3306/app" "-
+   Dspring.datasource.username=app" "-Dspring.datasource.password=pass"`
+5. Для запуска приложения с БД PostgreSQL выполняем следующую команду:
+   `java -jar artifacts/aqa-shop.jar "-
+   Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" "-
+   Dspring.datasource.username=app" "-Dspring.datasource.password=pass"`
+6. Открыть терминал и выполнить команду запуска контейнеров `docker-compose up`
+7. Запустить тесты командой `gradlew test` в новой вкладке терминала
+8. После прохождения всех тестов в новой вкладке терминала выполнить команду `gradlew allureServe` для просмотра отчета по результатам выполнения тестов

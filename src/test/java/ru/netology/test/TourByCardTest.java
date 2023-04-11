@@ -93,7 +93,6 @@ public class TourByCardTest {
         paymentPage.fillCvcField(getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationWrongFormat();
-        new SQLRequests();
         assertNull(SQLRequests.getStatusByCard());
 
     }

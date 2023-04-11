@@ -44,7 +44,7 @@ public class TourByCreditTest {
         paymentPage.fillCardNumberField(approvedCardNumber);
         paymentPage.shouldHaveSuccessNotification();
         fillOtherFieldsByValidInfo();
-        assertEquals("APPROVED", new SQLRequests().getStatusByCredit());
+        assertEquals("APPROVED", SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class TourByCreditTest {
         paymentPage.fillCardNumberField(declinedCardNumber);
         paymentPage.shouldHaveErrorNotification();
         fillOtherFieldsByValidInfo();
-        assertEquals("DECLINED", new SQLRequests().getStatusByCredit());
+        assertEquals("DECLINED", SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class TourByCreditTest {
         paymentPage.fillCardNumberField(getRandomCard());
         paymentPage.shouldHaveErrorNotification();
         fillOtherFieldsByValidInfo();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class TourByCreditTest {
         paymentPage.openCreditCardPaymentPage();
         stayAllFieldsEmpty();
         paymentPage.shouldHaveErrorNotificationRequiredField();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
     @Test
     void shouldCheckZeroValuesByCreditCard() {
@@ -82,7 +82,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotification();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationWrongFormat();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
 
     }
     @Test
@@ -108,7 +108,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationInvalidCard();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
 
     }
 
@@ -122,7 +122,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationWrongFormat();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationInvalidCard();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationCardExpired();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
 
     @Test
@@ -161,7 +161,7 @@ public class TourByCreditTest {
         paymentPage.fillCvcField(invalidCvc);
         paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotificationWrongFormat();
-        assertNull(new SQLRequests().getStatusByCredit());
+        assertNull(SQLRequests.getStatusByCredit());
     }
     private void fillOtherFieldsByValidInfo() {
         paymentPage.fillMonthField(DataGenerator.getMonth());

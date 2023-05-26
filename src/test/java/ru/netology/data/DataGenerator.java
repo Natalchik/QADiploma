@@ -40,7 +40,6 @@ public class DataGenerator {
       return LocalDate.now().plusYears(shiftYears).format(DateTimeFormatter.ofPattern("yy"));
    }
 
-
    public static String getRandomValidHolder() {
       Faker faker = new Faker(new Locale("en"));
       String name = faker.name().firstName();

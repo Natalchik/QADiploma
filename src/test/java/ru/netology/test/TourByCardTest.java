@@ -40,8 +40,9 @@ public class TourByCardTest {
     void shouldCheckValidApprovedByCard() {
         paymentPage.openCardPaymentPage();
         paymentPage.fillCardNumberField(approvedCardNumber);
-        paymentPage.shouldHaveSuccessNotification();
         fillOtherFieldsByValidInfo();
+        paymentPage.shouldHaveSuccessNotification();
+
         assertEquals("APPROVED", SQLRequests.getStatusByCard());
     }
 
@@ -49,8 +50,9 @@ public class TourByCardTest {
     void shouldCheckValidDeclinedCard() {
         paymentPage.openCardPaymentPage();
         paymentPage.fillCardNumberField(declinedCardNumber);
-        paymentPage.shouldHaveErrorNotification();
         fillOtherFieldsByValidInfo();
+        paymentPage.shouldHaveErrorNotification();
+
         assertEquals("DECLINED", SQLRequests.getStatusByCard());
     }
 
@@ -58,8 +60,9 @@ public class TourByCardTest {
     void shouldCheckInvalidByCard() {
         paymentPage.openCardPaymentPage();
         paymentPage.fillCardNumberField(getRandomCard());
-        paymentPage.shouldHaveErrorNotification();
         fillOtherFieldsByValidInfo();
+        paymentPage.shouldHaveErrorNotification();
+
         assertNull(SQLRequests.getStatusByCard());
     }
 

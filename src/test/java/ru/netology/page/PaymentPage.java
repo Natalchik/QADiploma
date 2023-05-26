@@ -19,7 +19,7 @@ public class PaymentPage {
     private final SelenideElement cvcField = $("[placeholder=\"999\"]");
     private final SelenideElement continueButton = $(withText("Продолжить"));
 
-    private final SelenideElement notification = $("div.notification_visible  div.notification__content");
+    private final SelenideElement notification = $("div.notification__visible  div.notification__content");
     private final SelenideElement wrongFormat = $(withText("Неверный формат"));
     private final SelenideElement invalidCard = $(withText("Неверно указан срок действия карты"));
     private final SelenideElement cardExpired = $(withText("Истёк срок действия карты"));
@@ -59,7 +59,7 @@ public class PaymentPage {
     }
 
     public void shouldHaveErrorNotification() {
-        notification.shouldHave(Condition.text("Ошибка! Банк отказал в проведении операции."), Duration.ofSeconds(15));
+        notification.shouldHave(Condition.text("Ошибка! Банк отказал в проведении операции"), Duration.ofSeconds(15));
     }
 
     public void shouldHaveErrorNotificationWrongFormat() {

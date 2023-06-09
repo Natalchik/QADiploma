@@ -30,11 +30,12 @@ dependencies {
     testImplementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'com.github.javafaker:javafaker:1.0.1'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
-    implementation 'org.postgresql:postgresql:42.2.14'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
-
+    testImplementation 'mysql:mysql-connector-java:8.0.29'
+    testImplementation 'org.postgresql:postgresql:42.2.14'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
 }
 
 test {

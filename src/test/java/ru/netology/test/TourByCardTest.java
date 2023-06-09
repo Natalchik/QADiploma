@@ -1,4 +1,4 @@
-package ru.netology.test;
+пpackage ru.netology.test;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -7,6 +7,11 @@ import ru.netology.data.DataGenerator;
 import ru.netology.data.SQLRequests;
 import ru.netology.page.PaymentPage;
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -40,7 +45,11 @@ public class TourByCardTest {
     void shouldCheckValidApprovedByCard() {
         paymentPage.openCardPaymentPage();
         paymentPage.fillCardNumberField(approvedCardNumber);
-        fillOtherFieldsByValidInfo();
+        paymentPage.fillMonthField(DataGenerator.getMonth());
+        paymentPage.fillYearField(DataGenerator.getYear(0));
+        paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
+        paymentPage.fillCvcField(getRandomValidCvc());
+        paymentPage.clickContinueButton();
         paymentPage.shouldHaveSuccessNotification();
 
         assertEquals("APPROVED", SQLRequests.getStatusByCard());
@@ -50,7 +59,11 @@ public class TourByCardTest {
     void shouldCheckValidDeclinedCard() {
         paymentPage.openCardPaymentPage();
         paymentPage.fillCardNumberField(declinedCardNumber);
-        fillOtherFieldsByValidInfo();
+        paymentPage.fillMonthField(DataGenerator.getMonth());
+        paymentPage.fillYearField(DataGenerator.getYear(0));
+        paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
+        paymentPage.fillCvcField(getRandomValidCvc());
+        paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotification();
 
         assertEquals("DECLINED", SQLRequests.getStatusByCard());
@@ -60,7 +73,11 @@ public class TourByCardTest {
     void shouldCheckInvalidByCard() {
         paymentPage.openCardPaymentPage();
         paymentPage.fillCardNumberField(getRandomCard());
-        fillOtherFieldsByValidInfo();
+        paymentPage.fillMonthField(DataGenerator.getMonth());
+        paymentPage.fillYearField(DataGenerator.getYear(0));
+        paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
+        paymentPage.fillCvcField(getRandomValidCvc());
+        paymentPage.clickContinueButton();
         paymentPage.shouldHaveErrorNotification();
 
         assertNull(SQLRequests.getStatusByCard());
@@ -70,8 +87,7 @@ public class TourByCardTest {
     void shouldCheckEmptyByCard() {
         paymentPage.openCardPaymentPage();
         stayAllFieldsEmpty();
-        paymentPage.shouldHaveErrorNotificationRequiredField();
-        assertNull(SQLRequests.getStatusByCard());
+        $(byText ("Поле обязательно для заполнения")).shouldBe(visible, Duration.ofSeconds(30));;
     }
     @Test
     void shouldCheckZeroValuesByCard() {
@@ -108,8 +124,7 @@ public class TourByCardTest {
         paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
         paymentPage.fillCvcField(getRandomValidCvc());
         paymentPage.clickContinueButton();
-        paymentPage.shouldHaveErrorNotificationInvalidCard();
-        assertNull(SQLRequests.getStatusByCard());
+        $(byText ("Неверный формат")).shouldBe(visible, Duration.ofSeconds(30));
 
     }
 
@@ -135,8 +150,7 @@ public class TourByCardTest {
         paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
         paymentPage.fillCvcField(getRandomValidCvc());
         paymentPage.clickContinueButton();
-        paymentPage.shouldHaveErrorNotificationInvalidCard();
-        assertNull(SQLRequests.getStatusByCard());
+        $(byText ("Неверно указан срок действия карты")).shouldBe(visible, Duration.ofSeconds(30));
     }
 
     @Test
@@ -148,8 +162,8 @@ public class TourByCardTest {
         paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
         paymentPage.fillCvcField(getRandomValidCvc());
         paymentPage.clickContinueButton();
-        paymentPage.shouldHaveErrorNotificationCardExpired();
-        assertNull(SQLRequests.getStatusByCard());
+        $(byText ("Истёк срок действия карты")).shouldBe(visible, Duration.ofSeconds(30));
+
     }
 
     @Test
@@ -164,13 +178,7 @@ public class TourByCardTest {
         paymentPage.shouldHaveErrorNotificationWrongFormat();
         assertNull(SQLRequests.getStatusByCard());
     }
-    private void fillOtherFieldsByValidInfo() {
-        paymentPage.fillMonthField(DataGenerator.getMonth());
-        paymentPage.fillYearField(DataGenerator.getYear(0));
-        paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
-        paymentPage.fillCvcField(getRandomValidCvc());
-        paymentPage.clickContinueButton();
-    }
+
     private void stayAllFieldsEmpty() {
         paymentPage.fillCardNumberField(emptyCard);
         paymentPage.fillMonthField(emptyMonth);

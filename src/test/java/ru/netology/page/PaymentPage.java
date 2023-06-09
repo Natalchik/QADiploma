@@ -24,7 +24,7 @@ public class PaymentPage {
     private final SelenideElement invalidCard = $(withText("Неверно указан срок действия карты"));
     private final SelenideElement cardExpired = $(withText("Истёк срок действия карты"));
     private final SelenideElement requiredField = $(withText("Поле обязательно для заполнения"));
-
+    private final SelenideElement subField = $("input__sub");
     public void openCardPaymentPage(){
         buyButton.click();
     }

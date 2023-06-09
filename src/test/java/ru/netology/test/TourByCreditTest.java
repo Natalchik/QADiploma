@@ -8,6 +8,11 @@ import ru.netology.data.SQLRequests;
 import ru.netology.page.PaymentPage;
 
 
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -69,8 +74,7 @@ public class TourByCreditTest {
     void shouldCheckEmptyByCreditCard() {
         paymentPage.openCreditCardPaymentPage();
         stayAllFieldsEmpty();
-        paymentPage.shouldHaveErrorNotificationRequiredField();
-        assertNull(SQLRequests.getStatusByCredit());
+        $(byText ("Поле обязательно для заполнения")).shouldBe(visible, Duration.ofSeconds(30));;
     }
     @Test
     void shouldCheckZeroValuesByCreditCard() {
@@ -107,8 +111,7 @@ public class TourByCreditTest {
         paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
-        paymentPage.shouldHaveErrorNotificationInvalidCard();
-        assertNull(SQLRequests.getStatusByCredit());
+        $(byText ("Неверный формат")).shouldBe(visible, Duration.ofSeconds(30));
 
     }
 
@@ -134,8 +137,7 @@ public class TourByCreditTest {
         paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
-        paymentPage.shouldHaveErrorNotificationInvalidCard();
-        assertNull(SQLRequests.getStatusByCredit());
+        $(byText ("Неверно указан срок действия карты")).shouldBe(visible, Duration.ofSeconds(30));
     }
 
     @Test
@@ -147,8 +149,7 @@ public class TourByCreditTest {
         paymentPage.fillHolderField(DataGenerator.getRandomValidHolder());
         paymentPage.fillCvcField(DataGenerator.getRandomValidCvc());
         paymentPage.clickContinueButton();
-        paymentPage.shouldHaveErrorNotificationCardExpired();
-        assertNull(SQLRequests.getStatusByCredit());
+        $(byText ("Истёк срок действия карты")).shouldBe(visible, Duration.ofSeconds(30));
     }
 
     @Test

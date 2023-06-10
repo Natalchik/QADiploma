@@ -1,4 +1,4 @@
-пpackage ru.netology.test;
+package ru.netology.test;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
